@@ -1,0 +1,131 @@
+<html>
+	<head>
+		<style>
+			body {
+				background-color: #111;
+				font-family: "Ubuntu";
+				color: whiteSmoke;
+				margin: 0;
+				overflow: hidden;
+			}
+			button {
+				padding: 10px 20px;
+				font-size: 15pt;
+				color: #111;
+				background-color: whitesmoke;
+				border: none;
+				border-radius: 5px;
+				margin: 10px;
+			}
+			button:hover {
+				background-color: silver;
+			}
+			button:active {
+				background-color: grey;
+			}
+			#buttons {
+				height: 50vh;
+				text-align: center;
+			}
+			#log {
+				height: 50vh;
+				background-color: black;
+				color: greenyellow;
+				font-family: 'Courier New', Courier, monospace;
+				padding: 5px;
+				font-weight: bold;
+				border-top: solid 1px white;
+			}
+			#container {
+				flex: 1;
+				width: 100vw;
+				height: 100vh;
+				overflow: hidden;
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<div id="buttons">
+				<button data-button="L2">L2</button>
+				<button data-button="R2">R2</button>
+				<hr/>
+				<button data-button="L1">L1</button>
+				<button data-button="R1">R1</button>
+				<hr>
+				<button data-button="UP">UP</button>
+				<button data-button="TRIANGLE">TRIANGLE</button>
+				<hr>
+				<button data-button="LEFT">LEFT</button>
+				<button data-button="RIGHT">RIGHT</button>
+				<button data-button="SELECT">SELECT</button>
+				<button data-button="START">START</button>
+				<button data-button="SQUARE">SQUARE</button>
+				<button data-button="CIRCLE">CIRCLE</button>
+				<hr>
+				<button data-button="DOWN">DOWN</button>
+				<button data-button="L3">L3</button>
+				<button data-button="R3">R3</button>
+				<button data-button="CROSS">CROSS</button>
+				<hr>
+				Left Analog Stick
+				<hr>
+				<button data-axis="LEFT_STICK_X" data-value="-1">LEFT</button>
+				<button data-axis="LEFT_STICK_X" data-value="1">RIGHT</button>
+				<button data-axis="LEFT_STICK_Y" data-value="-1">UP</button>
+				<button data-axis="LEFT_STICK_Y" data-value="1">DOWN</button>
+				<hr>
+				Right Analog Stick
+				<hr>
+				<button data-axis="RIGHT_STICK_X" data-value="-1">LEFT</button>
+				<button data-axis="RIGHT_STICK_X" data-value="1">RIGHT</button>
+				<button data-axis="RIGHT_STICK_Y" data-value="-1">UP</button>
+				<button data-axis="RIGHT_STICK_Y" data-value="1">DOWN</button>
+			</div>
+		</div>
+		<script>
+			const buttonContainer = document.getElementById("buttons");
+
+			buttonContainer.addEventListener('mousedown', e => {
+				if (e.which !== 1) {
+					return;
+				}
+				if (!e.target) {
+					return;
+				}
+				const target = e.target;
+				if (target.attributes.getNamedItem("data-button")) {
+					const button = target.attributes.getNamedItem("data-button").value;
+					setButtonState(button, true);
+				}
+				if (target.attributes.getNamedItem("data-axis")) {
+					const axis = target.attributes.getNamedItem("data-axis").value;
+					const axisValue = target.attributes.getNamedItem("data-value").value;
+					API.sendAxisState(axis, parseInt(axisValue));
+				}
+			});
+			buttonContainer.addEventListener('mouseup', e => {
+				if (e.which !== 1) {
+					return;
+				}
+				if (!e.target) {
+					return;
+				}
+				const target = e.target;
+				if (target.attributes.getNamedItem("data-button")) {
+					const button = target.attributes.getNamedItem("data-button").value;
+					setButtonState(button, false);
+				}
+				if (target.attributes.getNamedItem("data-axis")) {
+					const axis = target.attributes.getNamedItem("data-axis").value;
+					API.sendAxisState(axis, 0);
+				}
+			});
+
+			function setButtonState(button, state) {
+				API.sendButtonState(button, state);
+			}
+		</script>
+	</body>
+</html>

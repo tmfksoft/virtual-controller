@@ -1,0 +1,19 @@
+{
+  "name": "virtual-controller",
+  "version": "1.0.0",
+  "main": "build/index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "build": "rm -rf build && tsc",
+    "rebuild": "electron-rebuild"
+  },
+  "dependencies": {
+    "electron": "^17.0.0",
+    "electron-rebuild": "^3.2.7",
+    "virtual-xpad360": "https://github.com/tmfksoft/node-virtual-xpad360.git"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.15"
+  }
+}
